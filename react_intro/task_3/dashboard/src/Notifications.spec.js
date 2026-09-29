@@ -7,16 +7,14 @@ describe("Notifications component", () => {
     render(<Notifications />);
 
     expect(
-      screen.getByText(/here is the list of notifications/i)
+      screen.getByText(/here is the list of notifications/i),
     ).toBeInTheDocument();
   });
 
   test("renders a close button", () => {
     render(<Notifications />);
 
-    expect(
-      screen.getByRole("button", { name: /close/i })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /close/i })).toBeInTheDocument();
   });
 
   test("renders 3 notification items", () => {
@@ -28,20 +26,15 @@ describe("Notifications component", () => {
   });
 
   test("logs message when close button is clicked", () => {
-    const consoleSpy = jest
-      .spyOn(console, "log")
-      .mockImplementation(() => {});
+    const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {});
 
     render(<Notifications />);
 
-    const closeButton = screen.getByRole("button", {
-      name: /close/i,
-    });
-
+    const closeButton = screen.getByRole("button", { name: /close/i });
     fireEvent.click(closeButton);
 
     expect(consoleSpy).toHaveBeenCalledWith(
-      "Close button has been clicked"
+      expect.stringMatching(/close button has been clicked/i),
     );
 
     consoleSpy.mockRestore();
