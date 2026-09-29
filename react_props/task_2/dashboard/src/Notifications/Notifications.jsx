@@ -17,7 +17,7 @@ function Notifications({ notifications = [] }) {
             key={notification.id}
             type={notification.type}
             value={notification.value}
-            html={notification.html}
+            html={notification.value}
           />
         ))}
       </ul>
