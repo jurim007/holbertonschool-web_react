@@ -16,8 +16,8 @@ function Notifications({ notifications = [] }) {
           <NotificationItem
             key={notification.id}
             type={notification.type}
-            value={notification.id !== 3 ? notification.value : undefined}
-            html={notification.id === 3 ? notification.value : undefined}
+            value={notification.value}
+            html={notification.html}
           />
         ))}
       </ul>
