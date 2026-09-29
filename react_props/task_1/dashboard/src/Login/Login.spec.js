@@ -14,14 +14,11 @@ test("renders 2 labels, 2 inputs, and 1 button", () => {
 
 test("focuses input when related label is clicked", () => {
   render(<Login />);
+  const labels = document.querySelectorAll("label");
 
-  const emailLabel = screen.getByText(/email address/i);
-  const emailInput = screen.getByLabelText(/email address/i);
-  emailLabel.click();
-  expect(emailInput).toHaveFocus();
-
-  const passwordLabel = screen.getByText(/password/i);
-  const passwordInput = screen.getByLabelText(/password/i);
-  passwordLabel.click();
-  expect(passwordInput).toHaveFocus();
+  labels.forEach((label) => {
+    const input = document.getElementById(label.htmlFor);
+    label.click();
+    expect(input).toHaveFocus();
+  });
 });
