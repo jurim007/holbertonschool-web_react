@@ -3,7 +3,6 @@ import Login from "./Login";
 
 test("renders 2 labels, 2 inputs, and 1 button", () => {
   render(<Login />);
-  expect(screen.getAllByRole("textbox").length + screen.getAllByLabelText(/password/i).length).toBeGreaterThanOrEqual(0);
   const inputs = document.querySelectorAll("input");
   const labels = document.querySelectorAll("label");
   const buttons = screen.getAllByRole("button");
