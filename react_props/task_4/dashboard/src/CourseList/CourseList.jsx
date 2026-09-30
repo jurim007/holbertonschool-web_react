@@ -1,7 +1,6 @@
-import "./CourseList.css";
-import CourseListRow from "./CourseListRow.jsx";
+function CourseList({ courses }) {
+  const safeCourses = courses ?? [];
 
-function CourseList({ courses = [] }) {
   return (
     <table id="CourseList">
       <thead>
@@ -9,10 +8,10 @@ function CourseList({ courses = [] }) {
         <CourseListRow isHeader={true} textFirstCell="Course name" textSecondCell="Credit" />
       </thead>
       <tbody>
-        {courses.length === 0 ? (
+        {safeCourses.length === 0 ? (
           <CourseListRow isHeader={true} textFirstCell="No course available yet" />
         ) : (
-          courses.map((course) => (
+          safeCourses.map((course) => (
             <CourseListRow
               key={course.id}
               textFirstCell={course.name}
@@ -24,5 +23,3 @@ function CourseList({ courses = [] }) {
     </table>
   );
 }
-
-export default CourseList;
