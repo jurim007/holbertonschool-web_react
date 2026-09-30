@@ -1,3 +1,6 @@
+import "./CourseList.css";
+import CourseListRow from "./CourseListRow.jsx";
+
 function CourseList({ courses }) {
   const safeCourses = courses ?? [];
 
@@ -23,3 +26,5 @@ function CourseList({ courses }) {
     </table>
   );
 }
+
+export default CourseList;
