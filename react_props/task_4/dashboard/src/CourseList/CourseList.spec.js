@@ -13,9 +13,8 @@ test("renders 5 rows when receiving 3 courses", () => {
   expect(rows).toHaveLength(5);
 });
 
-test("renders 1 row in tbody when receiving an empty array", () => {
+test("renders 1 row when receiving an empty array", () => {
   render(<CourseList courses={[]} />);
-  const tbody = document.querySelector("tbody");
-  const rows = within(tbody).getAllByRole("row");
+  const rows = screen.getAllByRole("row");
   expect(rows).toHaveLength(1);
 });
