@@ -12,17 +12,14 @@ function Notifications({ notifications = [] }) {
       <p>Here is the list of notifications</p>
 
       <ul>
-        {notifications.map((notification) => {
-          const containsMarkup = /<[^>]+>/.test(notification.value);
-          return (
-            <NotificationItem
-              key={notification.id}
-              type={notification.type}
-              value={containsMarkup ? undefined : notification.value}
-              html={containsMarkup ? notification.value : undefined}
-            />
-          );
-        })}
+        {notifications.map((notification) => (
+          <NotificationItem
+            key={notification.id}
+            type={notification.type}
+            value={notification.value}
+            html={notification.html}
+          />
+        ))}
       </ul>
 
       <button

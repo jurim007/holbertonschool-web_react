@@ -12,7 +12,7 @@ function App() {
     {
       id: 3,
       type: "urgent",
-      value: "<strong>Urgent requirement</strong> - complete by EOD",
+      html: "<strong>Urgent requirement</strong> - complete by EOD",
     },
   ];
 
