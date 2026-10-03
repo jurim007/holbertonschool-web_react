@@ -1,30 +1,44 @@
 import "@testing-library/jest-dom";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import Notifications from "./Notifications";
 
-describe("Notifications Component", () => {
+const baseList = [
+  { id: 1, type: "default", value: "New course available" },
+  { id: 2, type: "urgent", value: "New resume available" },
+];
 
-    it("logs message when notification is clicked", () => {
+test("does not re-render when notifications length stays the same", () => {
+  const { rerender } = render(
+    <Notifications notifications={baseList} displayDrawer={true} />
+  );
+  expect(screen.getByText(/new course available/i)).toBeInTheDocument();
 
-        const notifications = [
-            { id: 1, type: "default", value: "New course available" },
-        ];
+  const sameLengthDifferentContent = [
+    { id: 1, type: "default", value: "Updated text" },
+    { id: 2, type: "urgent", value: "New resume available" },
+  ];
 
-        const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => { });
+  rerender(
+    <Notifications notifications={sameLengthDifferentContent} displayDrawer={true} />
+  );
 
-        render(
-            <Notifications notifications={notifications} displayDrawer={true} />
-        );
+  expect(screen.getByText(/new course available/i)).toBeInTheDocument();
+  expect(screen.queryByText(/updated text/i)).not.toBeInTheDocument();
+});
 
-        const listItem = screen.getByText("New course available");
+test("re-renders when notifications length changes", () => {
+  const { rerender } = render(
+    <Notifications notifications={baseList} displayDrawer={true} />
+  );
+  expect(screen.getAllByRole("listitem")).toHaveLength(2);
 
-        fireEvent.click(listItem);
+  const longerList = [
+    ...baseList,
+    { id: 3, type: "urgent", value: "Third item" },
+  ];
 
-        expect(consoleSpy).toHaveBeenCalledWith(
-            "Notification 1 has been marked as read"
-        );
+  rerender(<Notifications notifications={longerList} displayDrawer={true} />);
 
-        consoleSpy.mockRestore();
-    });
-
+  expect(screen.getAllByRole("listitem")).toHaveLength(3);
+  expect(screen.getByText(/third item/i)).toBeInTheDocument();
 });
