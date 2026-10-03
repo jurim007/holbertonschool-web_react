@@ -37,7 +37,7 @@ class App extends Component {
       {
         id: 3,
         type: "urgent",
-        html: { __html: "<strong>Urgent requirement</strong> - complete by EOD" },
+        html: "<strong>Urgent requirement</strong> - complete by EOD",
       },
     ];
 
