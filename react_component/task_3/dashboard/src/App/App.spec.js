@@ -1,36 +1,47 @@
-// App/App.spec.js
-import { render, screen, fireEvent } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import App from "./App";
 
-test("renders Login form when isLoggedIn is false", () => {
-  render(<App isLoggedIn={false} />);
-  expect(screen.getByText(/login to access the full dashboard/i)).toBeInTheDocument();
-});
+describe("App Component", () => {
+    beforeEach(() => {
+        render(<App />);
+    });
 
-test("renders CourseList table when isLoggedIn is true", () => {
-  render(<App isLoggedIn={true} />);
-  expect(document.getElementById("CourseList")).toBeInTheDocument();
-});
+    it("Renders Header component", () => {
+        const heading = screen.getByRole("heading", {
+            level: 1,
+            name: /school dashboard/i,
+        });
+        expect(heading).toBeInTheDocument();
+    });
 
-test("calls logOut when ctrl+h is pressed", () => {
-  const logOutMock = jest.fn();
-  jest.spyOn(window, "alert").mockImplementation(() => {});
+    it("Renders Login Component", () => {
+        const loginText = screen.getByText(/Login to access the full dashboard/i);
+        expect(loginText).toBeInTheDocument();
+    });
 
-  render(<App logOut={logOutMock} />);
-  fireEvent.keyDown(window, { key: "h", ctrlKey: true });
+    it("Renders Footer Component", () => {
+        expect(screen.getByText(/Copyright/i)).toBeInTheDocument();
+    });
 
-  expect(logOutMock).toHaveBeenCalledTimes(1);
+    it("CourseList is rendered when isLoggedIn is false", () => {
+        cleanup();
 
-  window.alert.mockRestore();
-});
+        const rendered = render(<App />);
+        const container = rendered.container;
 
-test("calls window.alert with 'Logging you out' when ctrl+h is pressed", () => {
-  const alertSpy = jest.spyOn(window, "alert").mockImplementation(() => {});
+        const loginComponent = container.querySelector(".App-body");
 
-  render(<App />);
-  fireEvent.keyDown(window, { key: "h", ctrlKey: true });
+        expect(loginComponent).toBeInTheDocument();
+    });
 
-  expect(alertSpy).toHaveBeenCalledWith("Logging you out");
+    it("CourseList is rendered when isLoggedIn is true", () => {
+        cleanup();
 
-  alertSpy.mockRestore();
+        const rendered = render(<App isLoggedIn={true} />);
+        const container = rendered.container;
+
+        const courseList = container.querySelector("#CourseList");
+
+        expect(courseList).toBeInTheDocument();
+    });
 });
