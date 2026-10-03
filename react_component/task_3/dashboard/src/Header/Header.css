@@ -1,0 +1,8 @@
+.App-header {
+    overflow: hidden;
+}
+
+.App-header>img,
+.App-header>h1 {
+    float: left;
+}
