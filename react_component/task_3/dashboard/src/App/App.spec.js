@@ -23,6 +23,11 @@ describe("App Component", () => {
         expect(screen.getByText(/Copyright/i)).toBeInTheDocument();
     });
 
+    it("Renders the News from the School section", () => {
+        expect(screen.getByText(/news from the school/i)).toBeInTheDocument();
+        expect(screen.getByText(/holberton school news goes here/i)).toBeInTheDocument();
+    });
+
     it("CourseList is rendered when isLoggedIn is false", () => {
         cleanup();
 
