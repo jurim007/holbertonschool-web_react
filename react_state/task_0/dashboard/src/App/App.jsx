@@ -1,3 +1,4 @@
+// App/App.jsx
 import { Component } from "react";
 import CourseList from "../CourseList/CourseList";
 import "../CourseList/CourseList.css";
@@ -12,6 +13,10 @@ import "./App.css";
 class App extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      displayDrawer: false,
+    };
 
     this.notificationsList = [
       { id: 1, type: "default", value: "New course available" },
@@ -46,15 +51,29 @@ class App extends Component {
     window.removeEventListener("keydown", this.handleKeyDown);
   }
 
+  handleDisplayDrawer = () => {
+    this.setState({ displayDrawer: true });
+  };
+
+  handleHideDrawer = () => {
+    this.setState({ displayDrawer: false });
+  };
+
   render() {
     const { isLoggedIn } = this.props;
+    const { displayDrawer } = this.state;
 
     return (
       <>
         <div className="notifications-header">
           <Header />
           <div className="root-notifications">
-            <Notifications notifications={this.notificationsList} />
+            <Notifications
+              notifications={this.notificationsList}
+              displayDrawer={displayDrawer}
+              handleDisplayDrawer={this.handleDisplayDrawer}
+              handleHideDrawer={this.handleHideDrawer}
+            />
           </div>
         </div>
 
@@ -80,7 +99,7 @@ class App extends Component {
 
 App.defaultProps = {
   isLoggedIn: false,
-  logOut: () => { },
+  logOut: () => {},
 };
 
 export default App;

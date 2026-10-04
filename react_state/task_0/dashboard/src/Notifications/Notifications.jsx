@@ -1,7 +1,8 @@
-import React from "react";
-import closeIcon from "../assets/close-button.png";
-import NotificationItem from "./NotificationItem";
+// Notifications/Notifications.jsx
+import { Fragment } from "react";
 import "./Notifications.css";
+import closeIcon from "../assets/close-button.png";
+import NotificationItem from "./NotificationItem.jsx";
 
 class Notifications extends React.Component {
   markAsRead = (id) => {
@@ -9,48 +10,68 @@ class Notifications extends React.Component {
   };
 
   shouldComponentUpdate(nextProps) {
-    return nextProps.notifications.length !== this.props.notifications.length;
+    return (
+      nextProps.notifications.length !== this.props.notifications.length ||
+      nextProps.displayDrawer !== this.props.displayDrawer
+    );
   }
 
   render() {
-    const { notifications = [], displayDrawer = false } = this.props;
+    const {
+      notifications = [],
+      displayDrawer = false,
+      handleDisplayDrawer,
+      handleHideDrawer,
+    } = this.props;
+
+    let content = null;
+
+    if (displayDrawer) {
+      if (notifications.length === 0) {
+        content = <p>No new notification for now</p>;
+      } else {
+        content = (
+          <Fragment>
+            <p>Here is the list of notifications</p>
+            <ul>
+              {notifications.map((notification) => (
+                <NotificationItem
+                  key={notification.id}
+                  id={notification.id}
+                  type={notification.type}
+                  html={notification.html}
+                  value={notification.value}
+                  markAsRead={this.markAsRead}
+                />
+              ))}
+            </ul>
+          </Fragment>
+        );
+      }
+    }
 
     return (
-      <div className="notifications-container">
-        <div className="notification-title">Your notifications</div>
-
+      <Fragment>
+        <div className="notification-title" onClick={handleDisplayDrawer}>
+          Your notifications
+        </div>
         {displayDrawer && (
           <div className="notification-items">
-            {notifications.length > 0 ? (
-              <>
-                <p>Here is the list of notifications</p>
-                <ul>
-                  {notifications.map((notification) => (
-                    <NotificationItem
-                      key={notification.id}
-                      id={notification.id}
-                      type={notification.type}
-                      html={notification.html}
-                      value={notification.value}
-                      markAsRead={this.markAsRead}
-                    />
-                  ))}
-                </ul>
-              </>
-            ) : (
-              <p>No new notification for now</p>
-            )}
-
+            {content}
             <button
+              style={{ position: "absolute", top: "15px", right: "20px" }}
               aria-label="Close"
-              onClick={() => console.log("Close button has been clicked")}
-              className="close-button"
+              onClick={handleHideDrawer}
             >
-              <img alt="Close Button" src={closeIcon} />
+              <img
+                style={{ width: "10px", height: "10px" }}
+                src={closeIcon}
+                alt="close icon"
+              />
             </button>
           </div>
         )}
-      </div>
+      </Fragment>
     );
   }
 }
