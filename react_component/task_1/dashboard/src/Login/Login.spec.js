@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import Login from "./Login";
 
 test("renders 2 labels, 2 inputs, and 1 button", () => {
@@ -12,13 +13,14 @@ test("renders 2 labels, 2 inputs, and 1 button", () => {
   expect(buttons).toHaveLength(1);
 });
 
-test("focuses input when related label is clicked", () => {
+test("focuses input when related label is clicked", async () => {
+  const user = userEvent.setup();
   render(<Login />);
   const labels = document.querySelectorAll("label");
 
-  labels.forEach((label) => {
+  for (const label of labels) {
     const input = document.getElementById(label.htmlFor);
-    label.click();
+    await user.click(label);
     expect(input).toHaveFocus();
-  });
+  }
 });
