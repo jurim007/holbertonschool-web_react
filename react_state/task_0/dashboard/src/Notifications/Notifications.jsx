@@ -1,5 +1,5 @@
 // Notifications/Notifications.jsx
-import { Fragment } from "react";
+import React, { Fragment } from "react";
 import "./Notifications.css";
 import closeIcon from "../assets/close-button.png";
 import NotificationItem from "./NotificationItem.jsx";
