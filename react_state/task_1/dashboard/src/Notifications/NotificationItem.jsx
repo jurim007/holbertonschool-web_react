@@ -1,33 +1,23 @@
-/* eslint-disable */
-import React from "react";
+import { memo } from 'react';
 
-class NotificationItem extends React.PureComponent {
-  render() {
-    const { type = "default", html, value, markAsRead, id } = this.props;
+function NotificationItem({ type = 'default', html, value }) {
+  const style = { color: type === 'urgent' ? 'red' : 'blue' };
 
-    const style = type === "urgent" ? { color: "red" } : { color: "blue" };
-
-    if (html) {
-      return (
-        <li
-          data-notification-type={type}
-          style={style}
-          dangerouslySetInnerHTML={html}
-          onClick={() => markAsRead && markAsRead(id)}
-        />
-      );
-    }
-
+  if (html) {
     return (
       <li
         data-notification-type={type}
         style={style}
-        onClick={() => markAsRead && markAsRead(id)}
-      >
-        {value}
-      </li>
+        dangerouslySetInnerHTML={html}
+      />
     );
   }
+
+  return (
+    <li data-notification-type={type} style={style}>
+      {value}
+    </li>
+  );
 }
 
 export default NotificationItem;

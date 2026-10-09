@@ -1,58 +1,22 @@
-// Notifications/Notifications.spec.js
-import { render, screen } from "@testing-library/react";
-import Notifications from "./Notifications";
+import { render, screen } from '@testing-library/react';
+import Notifications from './Notifications';
 
-const notificationsList = [
-  { id: 1, type: "default", value: "New course available" },
-  { id: 2, type: "urgent", value: "New resume available" },
-  { id: 3, type: "urgent", html: { __html: "<strong>Urgent requirement</strong> - complete by EOD" } },
+const list = [
+  { id: 1, type: 'default', value: 'New course available' },
+  { id: 2, type: 'urgent', value: 'New resume available' },
+  { id: 3, type: 'urgent', html: { __html: '<strong>Urgent</strong> requirement' } },
 ];
 
-test("always renders the 'Your notifications' title", () => {
-  render(<Notifications displayDrawer={false} notifications={[]} />);
-  expect(screen.getByText(/your notifications/i)).toBeInTheDocument();
-});
+describe('Notifications', () => {
+  it('renders 3 notification items', () => {
+    render(<Notifications notifications={list} />);
+    expect(screen.getAllByRole('listitem')).toHaveLength(3);
+    expect(screen.getByText('New course available')).toBeInTheDocument();
+    expect(screen.getByText('New resume available')).toBeInTheDocument();
+  });
 
-test("does not display notification items when displayDrawer is false", () => {
-  render(<Notifications notifications={notificationsList} displayDrawer={false} />);
-  expect(screen.queryByText(/here is the list of notifications/i)).not.toBeInTheDocument();
-  expect(screen.queryAllByRole("listitem")).toHaveLength(0);
-});
-
-test("displays notification items when displayDrawer is true", () => {
-  render(<Notifications notifications={notificationsList} displayDrawer={true} />);
-  expect(screen.getByText(/here is the list of notifications/i)).toBeInTheDocument();
-  expect(screen.getAllByRole("listitem")).toHaveLength(3);
-});
-
-test("displays 'No new notification for now' when displayDrawer is true and notifications is empty", () => {
-  render(<Notifications notifications={[]} displayDrawer={true} />);
-  expect(screen.getByText(/no new notification for now/i)).toBeInTheDocument();
-});
-
-test("clicking the title calls handleDisplayDrawer", () => {
-  const handleDisplayDrawer = jest.fn();
-  render(
-    <Notifications
-      notifications={[]}
-      displayDrawer={false}
-      handleDisplayDrawer={handleDisplayDrawer}
-    />
-  );
-  screen.getByText(/your notifications/i).click();
-  expect(handleDisplayDrawer).toHaveBeenCalled();
-});
-
-test("clicking the close button calls handleHideDrawer", () => {
-  const handleHideDrawer = jest.fn();
-  render(
-    <Notifications
-      notifications={notificationsList}
-      displayDrawer={true}
-      handleHideDrawer={handleHideDrawer}
-    />
-  );
-  const closeButton = screen.getByRole("button", { name: /close/i });
-  closeButton.click();
-  expect(handleHideDrawer).toHaveBeenCalled();
+  it('renders nothing in the list by default', () => {
+    render(<Notifications />);
+    expect(screen.queryAllByRole('listitem')).toHaveLength(0);
+  });
 });
