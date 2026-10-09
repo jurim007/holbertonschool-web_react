@@ -1,18 +1,20 @@
-function NotificationItem({ type, html, value }) {
-  const color = type === "urgent" ? "red" : "blue";
+import { memo } from 'react';
+
+function NotificationItem({ type = 'default', html, value }) {
+  const style = { color: type === 'urgent' ? 'red' : 'blue' };
 
   if (html) {
     return (
       <li
         data-notification-type={type}
-        style={{ color }}
-        dangerouslySetInnerHTML={{ __html: html }}
+        style={style}
+        dangerouslySetInnerHTML={html}
       />
     );
   }
 
   return (
-    <li data-notification-type={type} style={{ color }}>
+    <li data-notification-type={type} style={style}>
       {value}
     </li>
   );
