@@ -22,10 +22,10 @@ function normalizeNotifications(data) {
   return nextNotifications.map((notification) =>
     notification.html
       ? {
-        ...notification,
-        html: { __html: getLatestNotification() },
-      }
-      : notification
+          ...notification,
+          html: { __html: getLatestNotification() },
+        }
+      : notification,
   );
 }
 
@@ -53,7 +53,7 @@ function App() {
             type: APP_ACTIONS.SET_NOTIFICATIONS,
             payload: normalizeNotifications(data).filter(
               (notification) =>
-                !removedNotificationIdsRef.current.has(notification.id)
+                !removedNotificationIdsRef.current.has(notification.id),
             ),
           });
         }
@@ -96,17 +96,11 @@ function App() {
   }, [state.user]);
 
   const handleDisplayDrawer = useCallback(() => {
-    dispatch({
-      type: APP_ACTIONS.TOGGLE_DRAWER,
-      payload: true,
-    });
+    dispatch({ type: APP_ACTIONS.TOGGLE_DRAWER });
   }, []);
 
   const handleHideDrawer = useCallback(() => {
-    dispatch({
-      type: APP_ACTIONS.TOGGLE_DRAWER,
-      payload: false,
-    });
+    dispatch({ type: APP_ACTIONS.TOGGLE_DRAWER });
   }, []);
 
   const logIn = useCallback((email, password) => {
