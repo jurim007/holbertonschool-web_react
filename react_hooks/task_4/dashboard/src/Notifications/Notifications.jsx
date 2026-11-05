@@ -30,7 +30,7 @@ const Notifications = ({
                 type={notification.type}
                 html={notification.html}
                 value={notification.value}
-                markAsRead={markNotificationAsRead}
+                markNotificationAsRead={markNotificationAsRead}
               />
             ))}
           </ul>
