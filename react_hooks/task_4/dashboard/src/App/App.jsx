@@ -1,6 +1,14 @@
 /* eslint-disable */
 import axios from "axios";
-import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+
 import CourseList from "../CourseList/CourseList";
 import "../CourseList/CourseList.css";
 import Footer from "../Footer/Footer";
@@ -23,10 +31,10 @@ function normalizeNotifications(data) {
   return nextNotifications.map((notification) =>
     notification.html
       ? {
-        ...notification,
-        html: { __html: getLatestNotification() },
-      }
-      : notification
+          ...notification,
+          html: { __html: getLatestNotification() },
+        }
+      : notification,
   );
 }
 
@@ -39,14 +47,19 @@ function normalizeCourses(data) {
 }
 
 function logDevelopmentError(error) {
-  if (typeof window !== "undefined" && window.location.hostname === "localhost") {
+  if (
+    typeof window !== "undefined" &&
+    window.location.hostname === "localhost"
+  ) {
     console.error(error);
   }
 }
 
 function App() {
   const { user: contextUser } = useContext(AppContext);
+
   const removedNotificationIdsRef = useRef(new Set());
+
   const [displayDrawer, setDisplayDrawer] = useState(true);
   const [user, setUser] = useState(contextUser);
   const [notifications, setNotifications] = useState([]);
@@ -61,10 +74,9 @@ function App() {
 
         if (isMounted) {
           setNotifications(
-            normalizeNotifications(data).filter(
-              (notification) =>
-                !removedNotificationIdsRef.current.has(notification.id)
-            )
+            normalizeNotifications(data).filter((notification) => {
+              return !removedNotificationIdsRef.current.has(notification.id);
+            }),
           );
         }
       } catch (error) {
@@ -110,7 +122,11 @@ function App() {
   }, []);
 
   const logIn = useCallback((email, password) => {
-    setUser({ email, password, isLoggedIn: true });
+    setUser({
+      email,
+      password,
+      isLoggedIn: true,
+    });
   }, []);
 
   const logOut = useCallback(() => {
@@ -118,21 +134,30 @@ function App() {
   }, [contextUser]);
 
   const markNotificationAsRead = useCallback((id) => {
+    console.log(`Notification ${id} has been marked as read`);
+
     removedNotificationIdsRef.current.add(id);
-    setNotifications((prevNotifications) =>
-      prevNotifications.filter((notification) => notification.id !== id)
-    );
+
+    setNotifications((previousNotifications) => {
+      return previousNotifications.filter((notification) => {
+        return notification.id !== id;
+      });
+    });
   }, []);
 
   const contextValue = useMemo(
-    () => ({ user, logOut }),
-    [user, logOut]
+    () => ({
+      user,
+      logOut,
+    }),
+    [user, logOut],
   );
 
   return (
     <AppContext.Provider value={contextValue}>
       <div className="notifications-header">
         <Header />
+
         <div className="root-notifications">
           <Notifications
             notifications={notifications}
