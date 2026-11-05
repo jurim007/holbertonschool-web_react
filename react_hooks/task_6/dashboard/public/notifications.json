@@ -15,5 +15,15 @@
     "html": {
       "__html": "<strong>Urgent requirement</strong> - complete by EOD"
     }
+  },
+  {
+    "id": 4,
+    "type": "default",
+    "value": "React Hooks task 8 is ready"
+  },
+  {
+    "id": 5,
+    "type": "urgent",
+    "value": "Review your course dashboard for updates"
   }
 ]
