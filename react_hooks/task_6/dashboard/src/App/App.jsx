@@ -96,7 +96,10 @@ function App() {
   }, [state.user]);
 
   const handleDisplayDrawer = useCallback(() => {
-    dispatch({ type: APP_ACTIONS.TOGGLE_DRAWER });
+    dispatch({
+      type: APP_ACTIONS.SET_DRAWER_DISPLAY,
+      payload: true,
+    });
   }, []);
 
   const handleHideDrawer = useCallback(() => {
