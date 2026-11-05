@@ -1,36 +1,40 @@
 import { memo } from "react";
 
-function NotificationItem({
+const NotificationItem = memo(function NotificationItem({
+  id = 0,
   type = "default",
-  html,
-  value,
-  markNotificationAsRead,
-  id,
+  value = "",
+  html = null,
+  markAsRead = () => {},
 }) {
-  const style = type === "urgent" ? { color: "red" } : { color: "blue" };
+  const style = {
+    color: type === "urgent" ? "red" : "blue",
+  };
 
   const handleClick = () => {
-    if (markNotificationAsRead) {
-      markNotificationAsRead(id);
-    }
+    markAsRead(id);
   };
 
   if (html) {
     return (
       <li
         data-notification-type={type}
-        style={style}
         dangerouslySetInnerHTML={html}
         onClick={handleClick}
+        style={style}
       />
     );
   }
 
   return (
-    <li data-notification-type={type} style={style} onClick={handleClick}>
+    <li
+      data-notification-type={type}
+      onClick={handleClick}
+      style={style}
+    >
       {value}
     </li>
   );
-}
+});
 
-export default memo(NotificationItem);
+export default NotificationItem;

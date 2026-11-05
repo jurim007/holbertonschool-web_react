@@ -1,69 +1,64 @@
-import React, { Fragment } from "react";
-
+import { memo } from "react";
+import closeIcon from "../assets/close-button.png";
+import NotificationItem from "./NotificationItem";
 import "./Notifications.css";
 
-import closeIcon from "../assets/close-button.png";
+function Notifications({
+    notifications = [],
+    displayDrawer = false,
+    handleDisplayDrawer,
+    handleHideDrawer,
+    markNotificationAsRead,
+}) {
+    return (
+        <div className="notifications-container">
+            <div className="notification-title" onClick={handleDisplayDrawer}>
+                Your notifications
+            </div>
 
-import NotificationItem from "./NotificationItem.jsx";
+            {displayDrawer && (
+                <div className="notification-items">
+                    {notifications.length > 0 ? (
+                        <>
+                            <p>Here is the list of notifications</p>
+                            <ul>
+                                {notifications.map((notification) => (
+                                    <NotificationItem
+                                        key={notification.id}
+                                        id={notification.id}
+                                        type={notification.type}
+                                        html={notification.html}
+                                        value={notification.value}
+                                        markAsRead={markNotificationAsRead}
+                                    />
+                                ))}
+                            </ul>
+                        </>
+                    ) : (
+                        <p>No new notification for now</p>
+                    )}
 
-const Notifications = ({
-  notifications = [],
-  displayDrawer = false,
-  handleDisplayDrawer,
-  handleHideDrawer,
-  markNotificationAsRead,
-}) => {
-  let content = null;
-
-  if (displayDrawer) {
-    if (notifications.length === 0) {
-      content = <p>No new notification for now</p>;
-    } else {
-      content = (
-        <Fragment>
-          <p>Here is the list of notifications</p>
-          <ul>
-            {notifications.map((notification) => (
-              <NotificationItem
-                key={notification.id}
-                id={notification.id}
-                type={notification.type}
-                html={notification.html}
-                value={notification.value}
-                markNotificationAsRead={markNotificationAsRead}
-              />
-            ))}
-          </ul>
-        </Fragment>
-      );
-    }
-  }
-
-  return (
-    <Fragment>
-      <div className="notification-title" onClick={handleDisplayDrawer}>
-        Your notifications
-      </div>
-
-      {displayDrawer && (
-        <div className="notification-items">
-          {content}
-
-          <button
-            style={{ position: "absolute", top: "15px", right: "20px" }}
-            aria-label="Close"
-            onClick={handleHideDrawer}
-          >
-            <img
-              style={{ width: "10px", height: "10px" }}
-              src={closeIcon}
-              alt="close icon"
-            />
-          </button>
+                    <button
+                        aria-label="Close"
+                        onClick={handleHideDrawer}
+                        className="close-button"
+                    >
+                        <img alt="Close Button" src={closeIcon} />
+                    </button>
+                </div>
+            )}
         </div>
-      )}
-    </Fragment>
-  );
-};
+    );
+}
 
-export default React.memo(Notifications);
+function arePropsEqual(prevProps, nextProps) {
+    return (
+        prevProps.notifications === nextProps.notifications &&
+        prevProps.displayDrawer === nextProps.displayDrawer &&
+        prevProps.handleDisplayDrawer === nextProps.handleDisplayDrawer &&
+        prevProps.handleHideDrawer === nextProps.handleHideDrawer &&
+        prevProps.markNotificationAsRead === nextProps.markNotificationAsRead
+    );
+}
+
+export default memo(Notifications, arePropsEqual);

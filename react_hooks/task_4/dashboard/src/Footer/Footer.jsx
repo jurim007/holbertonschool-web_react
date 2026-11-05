@@ -1,23 +1,23 @@
-// Footer/Footer.jsx
 import { useContext } from "react";
-import { getCurrentYear, getFooterCopy } from "../utils/utils.js";
-import newContext from "../Context/context.js";
+import { getCurrentYear, getFooterCopy } from "../utils/utils";
+import AppContext from "../Context/context";
+import "./Footer.css";
 
-function Footer() {
-  const { user } = useContext(newContext);
+const Footer = () => {
+    const { user = {} } = useContext(AppContext);
 
-  return (
-    <div className="App-footer">
-      <p>
-        Copyright {getCurrentYear()} - {getFooterCopy(true)}
-      </p>
-      {user.isLoggedIn && (
-        <p>
-          <a href="#">Contact us</a>
-        </p>
-      )}
-    </div>
-  );
-}
+    return (
+        <div className="App-footer">
+            <p>
+                Copyright {getCurrentYear()} - {getFooterCopy(true)}
+            </p>
+            {user.isLoggedIn && (
+                <p>
+                    <a href="#contact">Contact us</a>
+                </p>
+            )}
+        </div>
+    );
+};
 
 export default Footer;

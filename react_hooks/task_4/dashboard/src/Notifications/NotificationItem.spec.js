@@ -1,55 +1,110 @@
-// Notifications/NotificationItem.spec.js
+import "@testing-library/jest-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
 import NotificationItem from "./NotificationItem";
 
-test("renders a default notification in blue with the right data attribute", () => {
-  render(
-    <ul>
-      <NotificationItem type="default" value="Default message" />
-    </ul>,
-  );
-  const item = screen.getByText(/default message/i);
-  expect(item).toHaveStyle({ color: "blue" });
-  expect(item).toHaveAttribute("data-notification-type", "default");
-});
+describe("NotificationItem Component", () => {
+    const renderNotificationItem = (props) =>
+        render(
+            <ul>
+                <NotificationItem {...props} />
+            </ul>
+        );
 
-test("renders an urgent notification in red with the right data attribute", () => {
-  render(
-    <ul>
-      <NotificationItem type="urgent" value="Urgent message" />
-    </ul>,
-  );
-  const item = screen.getByText(/urgent message/i);
-  expect(item).toHaveStyle({ color: "red" });
-  expect(item).toHaveAttribute("data-notification-type", "urgent");
-});
+    it("Color is blue when type is default", () => {
+        renderNotificationItem({
+            type: "default",
+            value: "New course available",
+        });
 
-test("renders html content when the html prop is provided", () => {
-  render(
-    <ul>
-      <NotificationItem
-        type="urgent"
-        html={{ __html: "<strong>Urgent requirement</strong>" }}
-      />
-    </ul>,
-  );
-  const strong = screen.getByText(/urgent requirement/i);
-  expect(strong.tagName).toBe("STRONG");
-});
+        const listElement = screen.getByRole("listitem");
 
-test("clicking the item calls markAsRead with its id", () => {
-  const markAsRead = jest.fn();
-  render(
-    <ul>
-      <NotificationItem
-        id={7}
-        type="default"
-        value="Click me"
-        markAsRead={markAsRead}
-      />
-    </ul>,
-  );
-  fireEvent.click(screen.getByText(/click me/i));
-  expect(markAsRead).toHaveBeenCalledTimes(1);
-  expect(markAsRead).toHaveBeenCalledWith(7);
+        expect(listElement).toHaveStyle({ color: "blue" });
+        expect(listElement).toHaveAttribute("data-notification-type", "default");
+    });
+
+    it("Color is red when type is urgent", () => {
+        renderNotificationItem({
+            type: "urgent",
+            value: "New resume available",
+        });
+
+        const listElement = screen.getByRole("listitem");
+
+        expect(listElement).toHaveStyle({ color: "red" });
+        expect(listElement).toHaveAttribute("data-notification-type", "urgent");
+    });
+
+    it("calls markAsRead when clicked", () => {
+        const markAsRead = jest.fn();
+
+        renderNotificationItem({
+            id: 1,
+            type: "default",
+            value: "Test notification",
+            markAsRead,
+        });
+
+        const listItem = screen.getByRole("listitem");
+
+        fireEvent.click(listItem);
+
+        expect(markAsRead).toHaveBeenCalledWith(1);
+    });
+
+    it("does not re-render when props keep the same references", () => {
+        const html = { __html: "Notification 1" };
+        const markAsRead = jest.fn();
+        const { rerender } = render(
+            <ul>
+                <NotificationItem
+                    id={1}
+                    type="urgent"
+                    html={html}
+                    markAsRead={markAsRead}
+                />
+            </ul>
+        );
+
+        html.__html = "Updated Notification 1";
+        rerender(
+            <ul>
+                <NotificationItem
+                    id={1}
+                    type="urgent"
+                    html={html}
+                    markAsRead={markAsRead}
+                />
+            </ul>
+        );
+
+        expect(screen.queryByText("Updated Notification 1")).not.toBeInTheDocument();
+        expect(screen.getByText("Notification 1")).toBeInTheDocument();
+    });
+
+    it("re-renders when a prop reference changes", () => {
+        const markAsRead = jest.fn();
+        const { rerender } = render(
+            <ul>
+                <NotificationItem
+                    id={1}
+                    type="urgent"
+                    html={{ __html: "Notification 1" }}
+                    markAsRead={markAsRead}
+                />
+            </ul>
+        );
+
+        rerender(
+            <ul>
+                <NotificationItem
+                    id={1}
+                    type="urgent"
+                    html={{ __html: "Updated Notification 1" }}
+                    markAsRead={markAsRead}
+                />
+            </ul>
+        );
+
+        expect(screen.getByText("Updated Notification 1")).toBeInTheDocument();
+    });
 });

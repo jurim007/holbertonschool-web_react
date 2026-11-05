@@ -27,9 +27,10 @@ export default defineConfig([
     },
   },
   {
-    files: ['**/*.spec.js', '**/*.spec.jsx'],
+    files: ['**/*.spec.js'],
     languageOptions: {
       globals: {
+        ...globals.browser,
         ...globals.jest,
       },
     },

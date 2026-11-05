@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from "react";
 import BodySection from "./BodySection";
 import "./BodySectionWithMarginBottom.css";
