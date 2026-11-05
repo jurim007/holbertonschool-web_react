@@ -1,9 +1,13 @@
-// Notifications/NotificationItem.jsx
 import { memo } from "react";
 
 function NotificationItem({ type = "default", html, value, markAsRead, id }) {
   const style = type === "urgent" ? { color: "red" } : { color: "blue" };
-  const handleClick = () => markAsRead && markAsRead(id);
+
+  const handleClick = () => {
+    if (markAsRead) {
+      markAsRead(id);
+    }
+  };
 
   if (html) {
     return (
