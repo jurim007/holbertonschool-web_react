@@ -123,6 +123,8 @@ function App() {
   }, []);
 
   const markNotificationAsRead = useCallback((id) => {
+    console.log(`Notification ${id} has been marked as read`);
+
     removedNotificationIdsRef.current.add(id);
 
     dispatch({
