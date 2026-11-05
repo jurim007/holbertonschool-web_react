@@ -104,7 +104,7 @@ jest.mock("../Notifications/Notifications", () => {
           {String(callbackStability.sameMarkNotificationAsRead)}
         </p>
         <button onClick={handleDisplayDrawer} type="button">
-          open notifications
+          toggle notifications
         </button>
         <button onClick={handleHideDrawer} type="button">
           close notifications
@@ -284,12 +284,17 @@ describe("App Component with Reducer Integration", () => {
     expect(screen.getByTestId("display-drawer")).toHaveTextContent("true");
 
     await user.click(
-      screen.getByRole("button", { name: /open notifications/i }),
+      screen.getByRole("button", { name: /close notifications/i }),
+    );
+    expect(screen.getByTestId("display-drawer")).toHaveTextContent("false");
+
+    await user.click(
+      screen.getByRole("button", { name: /toggle notifications/i }),
     );
     expect(screen.getByTestId("display-drawer")).toHaveTextContent("true");
 
     await user.click(
-      screen.getByRole("button", { name: /close notifications/i }),
+      screen.getByRole("button", { name: /toggle notifications/i }),
     );
     expect(screen.getByTestId("display-drawer")).toHaveTextContent("false");
 
@@ -299,12 +304,7 @@ describe("App Component with Reducer Integration", () => {
     expect(screen.getByTestId("display-drawer")).toHaveTextContent("false");
 
     await user.click(
-      screen.getByRole("button", { name: /open notifications/i }),
-    );
-    expect(screen.getByTestId("display-drawer")).toHaveTextContent("true");
-
-    await user.click(
-      screen.getByRole("button", { name: /open notifications/i }),
+      screen.getByRole("button", { name: /toggle notifications/i }),
     );
     expect(screen.getByTestId("display-drawer")).toHaveTextContent("true");
   });
