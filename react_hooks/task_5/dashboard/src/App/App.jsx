@@ -17,7 +17,9 @@ const notificationsList = [
   {
     id: 3,
     type: "urgent",
-    html: { __html: "<strong>Urgent requirement</strong> - complete by EOD" },
+    html: {
+      __html: "<strong>Urgent requirement</strong> - complete by EOD",
+    },
   },
 ];
 
