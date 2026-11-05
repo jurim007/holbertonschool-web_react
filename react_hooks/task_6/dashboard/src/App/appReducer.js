@@ -1,6 +1,7 @@
 export const APP_ACTIONS = {
   LOGIN: "LOGIN",
   LOGOUT: "LOGOUT",
+  TOGGLE_DRAWER: "TOGGLE_DRAWER",
   SET_DRAWER_DISPLAY: "SET_DRAWER_DISPLAY",
   MARK_NOTIFICATION_READ: "MARK_NOTIFICATION_READ",
   SET_NOTIFICATIONS: "SET_NOTIFICATIONS",
@@ -41,6 +42,12 @@ export function appReducer(state = initialState, action) {
         courses: [],
       };
 
+    case APP_ACTIONS.TOGGLE_DRAWER:
+      return {
+        ...state,
+        displayDrawer: !state.displayDrawer,
+      };
+
     case APP_ACTIONS.SET_DRAWER_DISPLAY:
       return {
         ...state,
@@ -58,7 +65,7 @@ export function appReducer(state = initialState, action) {
     case APP_ACTIONS.SET_NOTIFICATIONS:
       return {
         ...state,
-        notifications: action.payload,
+        notifications: [...action.payload],
       };
 
     case APP_ACTIONS.SET_COURSES:
