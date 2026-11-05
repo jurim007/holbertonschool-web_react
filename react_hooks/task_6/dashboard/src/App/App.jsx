@@ -93,18 +93,18 @@ function App() {
     return () => {
       isMounted = false;
     };
-  }, [state.user]);
+  }, [state.user.isLoggedIn]);
 
   const handleDisplayDrawer = useCallback(() => {
     dispatch({
-      type: APP_ACTIONS.SET_DRAWER_DISPLAY,
+      type: APP_ACTIONS.TOGGLE_DRAWER,
       payload: true,
     });
   }, []);
 
   const handleHideDrawer = useCallback(() => {
     dispatch({
-      type: APP_ACTIONS.SET_DRAWER_DISPLAY,
+      type: APP_ACTIONS.TOGGLE_DRAWER,
       payload: false,
     });
   }, []);
@@ -123,8 +123,6 @@ function App() {
   }, []);
 
   const markNotificationAsRead = useCallback((id) => {
-    console.log(`Notification ${id} has been marked as read`);
-
     removedNotificationIdsRef.current.add(id);
 
     dispatch({

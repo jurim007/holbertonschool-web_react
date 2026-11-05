@@ -398,25 +398,17 @@ describe("App Component", () => {
 
     it("removes notification when marked as read", async () => {
         const user = userEvent.setup();
-        const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
         await renderApp();
 
         await waitFor(() => {
             expect(screen.getByText("New course available")).toBeInTheDocument();
         });
 
-        try {
-            await user.click(
-                screen.getByRole("button", { name: /mark notification 1/i })
-            );
+        await user.click(
+            screen.getByRole("button", { name: /mark notification 1/i })
+        );
 
-            expect(screen.queryByText("New course available")).not.toBeInTheDocument();
-            expect(logSpy).toHaveBeenCalledWith(
-                "Notification 1 has been marked as read"
-            );
-        } finally {
-            logSpy.mockRestore();
-        }
+        expect(screen.queryByText("New course available")).not.toBeInTheDocument();
     });
 
     it("does not restore a removed notification when the fetch resolves later", async () => {

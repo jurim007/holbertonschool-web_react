@@ -54,7 +54,7 @@ function logDevelopmentError(error) {
   }
 }
 
-function App() {
+const App = () => {
   const { user: contextUser } = useContext(AppContext);
 
   const removedNotificationIdsRef = useRef(new Set());
@@ -133,8 +133,6 @@ function App() {
   }, [contextUser]);
 
   const markNotificationAsRead = useCallback((id) => {
-    console.log(`Notification ${id} has been marked as read`);
-
     removedNotificationIdsRef.current.add(id);
 
     setNotifications((previousNotifications) => {
@@ -185,6 +183,6 @@ function App() {
       <Footer />
     </AppContext.Provider>
   );
-}
+};
 
 export default App;
